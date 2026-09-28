@@ -1,0 +1,26 @@
+# Moderate deterministic vehicle/navigation degradation example.
+mode: SIMULATION
+
+simulation:
+  random_seed: 24
+  required_observations: 7
+  vehicle_twin:
+    gps_noise_std_m: 0.75
+    gps_drift_m_per_sample: 0.02
+    heading_bias_deg: 0.5
+    heading_noise_std_deg: 0.25
+    moving_roll_deg: 3
+    moving_pitch_deg: 2
+    travel_fraction_per_update: 0.5
+    arrival_delay_updates: 2
+    position_tracking_error_m: 1
+    telemetry_packet_loss_probability: 0.01
+    telemetry_latency_seconds: 0.1
+    geofence_radius_m: 500
+
+navigation:
+  stabilization_seconds: 0
+  movement_timeout_seconds: 120
+  max_mission_duration_seconds: 600
+  max_total_distance_m: 800
+  accepted_flight_modes: [GUIDED, LOITER]

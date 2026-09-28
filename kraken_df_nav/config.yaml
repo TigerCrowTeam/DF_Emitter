@@ -1,0 +1,124 @@
+mode: SIMULATION
+
+rf:
+  center_frequency_hz: 915000000
+  bandwidth_hz: 2400000
+
+kraken:
+  endpoint: ""
+  min_confidence: 0.70
+  antenna_heading_offset_deg: 0
+  timeout_seconds: 2
+  max_measurement_age_seconds: 2
+  max_pose_measurement_skew_seconds: 1
+  max_frozen_samples: 20
+  max_consecutive_rejections: 20
+
+mavlink:
+  connection: "udp:127.0.0.1:14550"
+  heartbeat_timeout_seconds: 10
+  telemetry_timeout_seconds: 5
+
+df:
+  target_error_radius_m: 10
+  max_roll_deg: 5
+  max_pitch_deg: 5
+  minimum_observations: 2
+  outlier_rejection: true
+  outlier_threshold_m: 20
+  max_position_accuracy_m: 10
+  max_heading_accuracy_deg: 10
+  max_collection_speed_m_s: 0.5
+  max_leave_one_out_shift_m: 30
+
+navigation:
+  desired_cross_bearing_deg: 60
+  observation_spacing_m: 100
+  max_search_radius_m: 500
+  max_movement_distance_m: 200
+  arrival_tolerance_m: 5
+  stabilization_seconds: 3
+  command_altitude_m: null
+  movement_timeout_seconds: 120
+  max_mission_duration_seconds: 600
+  max_total_distance_m: 800
+  accepted_flight_modes: [GUIDED, LOITER]
+  planner_min_separation_m: 20
+  planner_min_information_gain: 0.01
+  planner_max_attempts: 3
+
+logging:
+  directory: "./logs"
+  save_csv: true
+  save_json: true
+
+simulation:
+  transmitter_lat: 37.0008
+  transmitter_lon: -121.9992
+  start_lat: 37.0
+  start_lon: -122.0
+  altitude_m: 60
+  bearing_noise_std_deg: 2
+  random_seed: 7
+  use_sitl: false
+  required_observations: 7
+  digital_twin:
+    # All advanced effects default to disabled. Enable them in scenario-specific configs.
+    constant_bias_deg: 0
+    drift_deg_per_sample: 0
+    heading_error_deg: 0
+    range_noise_deg_per_km: 0
+    correlated_noise_std_deg: 0
+    correlated_noise_coefficient: 0
+    dropout_probability: 0
+    burst_dropout_probability: 0
+    burst_dropout_samples: 0
+    delay_seconds: 0
+    stale_probability: 0
+    stale_age_seconds: 10
+    duplicate_probability: 0
+    frozen_probability: 0
+    malformed_probability: 0
+    wrong_frequency_probability: 0
+    wrong_frequency_offset_hz: 1000000
+    outlier_probability: 0
+    outlier_magnitude_deg: 90
+    outlier_burst_probability: 0
+    outlier_burst_samples: 0
+    multipath_probability: 0
+    multipath_bias_deg: 35
+    multipath_persistence_samples: 1
+    confidence_error_scale_deg: 20
+    confidence_range_scale_m: 1000
+    moving_bearing_penalty_deg: 0
+    moving_confidence_penalty: 0
+    attitude_bearing_penalty_deg: 0
+    attitude_confidence_penalty: 0
+  vehicle_twin:
+    # Default instant, perfect vehicle behavior. Enable faults in scenario configs.
+    gps_noise_std_m: 0
+    gps_drift_m_per_sample: 0
+    heading_bias_deg: 0
+    heading_noise_std_deg: 0
+    moving_roll_deg: 0
+    moving_pitch_deg: 0
+    stationary_roll_deg: 0
+    stationary_pitch_deg: 0
+    travel_fraction_per_update: 1
+    arrival_delay_updates: 0
+    position_tracking_error_m: 0
+    waypoint_failure_probability: 0
+    telemetry_packet_loss_probability: 0
+    telemetry_latency_seconds: 0
+    telemetry_loss_after_samples: 0
+    heartbeat_loss_after_samples: 0
+    unexpected_mode_after_samples: 0
+    unexpected_mode: ALT_HOLD
+    gps_loss_after_samples: 0
+    geofence_radius_m: 0
+
+replay:
+  path: ""
+
+safety:
+  invalid_data_action: ABORT

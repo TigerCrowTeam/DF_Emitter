@@ -1,0 +1,26 @@
+# Moderate deterministic KrakenSDR-like degradation example.
+# Unspecified application settings retain their typed defaults.
+mode: SIMULATION
+
+simulation:
+  random_seed: 42
+  bearing_noise_std_deg: 2
+  required_observations: 7
+  digital_twin:
+    constant_bias_deg: 1.5
+    drift_deg_per_sample: 0.05
+    range_noise_deg_per_km: 1.0
+    correlated_noise_std_deg: 0.75
+    correlated_noise_coefficient: 0.65
+    dropout_probability: 0.02
+    delay_seconds: 0.1
+    outlier_probability: 0.01
+    outlier_magnitude_deg: 45
+    multipath_probability: 0.03
+    multipath_bias_deg: 12
+    multipath_persistence_samples: 2
+    confidence_error_scale_deg: 25
+    confidence_range_scale_m: 1500
+
+navigation:
+  stabilization_seconds: 0

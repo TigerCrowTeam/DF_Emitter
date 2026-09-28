@@ -1,0 +1,80 @@
+mode: SIMULATION
+rf: {center_frequency_hz: 915000000, bandwidth_hz: 2400000}
+kraken:
+  endpoint: ""
+  min_confidence: 0.70
+  antenna_heading_offset_deg: 0
+  timeout_seconds: 2
+  max_measurement_age_seconds: 2
+  max_pose_measurement_skew_seconds: 1
+  max_frozen_samples: 20
+  max_consecutive_rejections: 20
+mavlink:
+  connection: "udpin:127.0.0.1:14560"
+  heartbeat_timeout_seconds: 15
+  telemetry_timeout_seconds: 5
+  # Match ArduPilot MAV_GCS_SYSID for sustained GUIDED authority; component 191
+  # remains distinct from MAVProxy component 190.
+  source_system: 255
+  source_component: 191
+  expected_target_system: 1
+  expected_target_component: 1
+mavproxy:
+  enabled: true
+  master_connection: "tcp:127.0.0.1:5760"
+  loopback_host: "127.0.0.1"
+  poc_output_port: 14560
+  preparation_output_port: 14561
+  operator_output_port: 14550
+  # Use a distinct identity so MAVProxy and the application have independent
+  # MAVLink packet sequences.
+  source_system: 254
+  source_component: 190
+  map_enabled: true
+  console_enabled: true
+df:
+  target_error_radius_m: 10
+  max_roll_deg: 5
+  max_pitch_deg: 5
+  minimum_observations: 2
+  outlier_rejection: true
+  outlier_threshold_m: 20
+  max_position_accuracy_m: 10
+  max_heading_accuracy_deg: 10
+  max_collection_speed_m_s: 0.5
+  max_leave_one_out_shift_m: 30
+navigation:
+  desired_cross_bearing_deg: 60
+  # Keep the routed showcase comfortably inside ArduCopter SITL's default
+  # 150 m fence radius while retaining useful cross-bearing geometry.
+  observation_spacing_m: 50
+  max_search_radius_m: 500
+  max_movement_distance_m: 200
+  # Routed SITL's EKF target and forwarded GLOBAL_POSITION_INT can settle about
+  # 9.6 m apart after multi-leg movement. Hardware retains the 5 m template
+  # until field measurements justify a change.
+  arrival_tolerance_m: 10
+  stabilization_seconds: 3
+  command_altitude_m: 10
+  movement_timeout_seconds: 120
+  max_mission_duration_seconds: 600
+  max_total_distance_m: 800
+  accepted_flight_modes: [GUIDED, LOITER]
+  planner_min_separation_m: 20
+  planner_min_information_gain: 0.01
+  planner_max_attempts: 3
+logging: {directory: "./logs", save_csv: true, save_json: true}
+simulation:
+  # A nearby emitter keeps the visual demonstration inside the conservative
+  # default SITL operating bubble while still requiring cross-bearing motion.
+  transmitter_lat: 37.0004
+  transmitter_lon: -121.9996
+  start_lat: 37.0
+  start_lon: -122.0
+  altitude_m: 10
+  bearing_noise_std_deg: 2
+  random_seed: 42
+  use_sitl: true
+  required_observations: 5
+replay: {path: ""}
+safety: {invalid_data_action: ABORT}

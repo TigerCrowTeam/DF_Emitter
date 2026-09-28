@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.0" y="32" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold">Planner mean distance traveled</text>
+<text x="198" y="125.83333333333334" text-anchor="end" font-family="sans-serif" font-size="15">information_gain</text>
+<rect x="210" y="86.9" width="354.6" height="60.8" rx="4" fill="#2563eb"/>
+<text x="572.6" y="125.83333333333334" font-family="sans-serif" font-size="14">440.00 m</text>
+<text x="198" y="247.50000000000003" text-anchor="end" font-family="sans-serif" font-size="15">fixed_grid</text>
+<rect x="210" y="208.5666666666667" width="571.4" height="60.8" rx="4" fill="#2563eb"/>
+<text x="789.4" y="247.50000000000003" font-family="sans-serif" font-size="14">709.04 m</text>
+<text x="198" y="369.1666666666667" text-anchor="end" font-family="sans-serif" font-size="15">random</text>
+<rect x="210" y="330.23333333333335" width="459.3" height="60.8" rx="4" fill="#2563eb"/>
+<text x="677.3" y="369.1666666666667" font-family="sans-serif" font-size="14">569.90 m</text>
+<text x="450.0" y="482" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#555">SIMULATED RESULTS — not validated real-RF performance</text></svg>

@@ -1,0 +1,66 @@
+# SAFE TEMPLATE ONLY. Replace both REPLACE values and complete M9 bench
+# validation before connecting this profile to hardware.
+mode: LIVE
+rf: {center_frequency_hz: 915000000, bandwidth_hz: 2400000}
+kraken:
+  endpoint: "http://REPLACE_WITH_KRAKEN_HOST:8081/DOA_value.html"
+  min_confidence: 0.70
+  antenna_heading_offset_deg: 0
+  timeout_seconds: 2
+  max_measurement_age_seconds: 2
+  max_pose_measurement_skew_seconds: 1
+  max_frozen_samples: 20
+  max_consecutive_rejections: 20
+mavlink:
+  # The application opens only this loopback route, never the Cube device.
+  connection: "udpin:127.0.0.1:14560"
+  heartbeat_timeout_seconds: 15
+  telemetry_timeout_seconds: 5
+  # Confirm MAV_GCS_SYSID on the real vehicle during M9; 255 is the SITL-proven default.
+  source_system: 255
+  source_component: 191
+  expected_target_system: 1
+  expected_target_component: 1
+mavproxy:
+  enabled: true
+  master_connection: "/dev/serial/by-id/REPLACE_WITH_CUBE_DEVICE,115200"
+  loopback_host: "127.0.0.1"
+  poc_output_port: 14560
+  preparation_output_port: 14561
+  operator_output_port: 14550
+  # Use a distinct identity so MAVProxy and the application have independent
+  # MAVLink packet sequences.
+  source_system: 254
+  source_component: 190
+  map_enabled: true
+  console_enabled: true
+df:
+  target_error_radius_m: 10
+  max_roll_deg: 5
+  max_pitch_deg: 5
+  minimum_observations: 2
+  outlier_rejection: true
+  outlier_threshold_m: 20
+  max_position_accuracy_m: 10
+  max_heading_accuracy_deg: 10
+  max_collection_speed_m_s: 0.5
+  max_leave_one_out_shift_m: 30
+navigation:
+  desired_cross_bearing_deg: 60
+  observation_spacing_m: 100
+  max_search_radius_m: 500
+  max_movement_distance_m: 200
+  arrival_tolerance_m: 5
+  stabilization_seconds: 3
+  command_altitude_m: null
+  movement_timeout_seconds: 120
+  max_mission_duration_seconds: 600
+  max_total_distance_m: 800
+  accepted_flight_modes: [GUIDED, LOITER]
+  planner_min_separation_m: 20
+  planner_min_information_gain: 0.01
+  planner_max_attempts: 3
+logging: {directory: "./logs", save_csv: true, save_json: true}
+simulation: {use_sitl: false, required_observations: 7}
+replay: {path: ""}
+safety: {invalid_data_action: ABORT}

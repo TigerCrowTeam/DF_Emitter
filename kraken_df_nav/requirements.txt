@@ -1,0 +1,9 @@
+numpy>=1.23,<3
+PyYAML>=6,<7
+pymavlink>=2.4.40,<3
+pytest>=7,<9
+pexpect>=4.9,<5
+empy==3.3.4
+MAVProxy==1.8.74
+future==1.0.0
+setuptools==80.9.0

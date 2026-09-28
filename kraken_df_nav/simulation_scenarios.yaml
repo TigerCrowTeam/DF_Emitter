@@ -1,0 +1,206 @@
+version: 1
+description: Deterministic scenario catalog for the simulation-only direction-finding PoC.
+
+scenarios:
+  - name: nominal_low_noise
+    description: Nominal mission with 1.5 degree independent bearing noise.
+    classification: PASS_EXPECTED
+    seed: 7
+    overrides:
+      simulation:
+        bearing_noise_std_deg: 1.5
+    expected: {outcome: complete, max_error_m: 10}
+
+  - name: moderate_noise
+    description: Five degree bearing noise may complete or terminate honestly.
+    classification: DEGRADED_ALLOWED
+    seed: 12
+    overrides:
+      simulation:
+        bearing_noise_std_deg: 5
+    expected: {outcome: degraded}
+
+  - name: severe_noise
+    description: Twenty degree bearing noise must not produce unsupported completion.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 8
+    overrides:
+      simulation:
+        bearing_noise_std_deg: 20
+    expected: {outcome: safe_failure, require_rejection: true}
+
+  - name: constant_bias
+    description: Persistent eight degree calibration bias is degraded and must not falsely complete.
+    classification: DEGRADED_ALLOWED
+    seed: 3
+    overrides:
+      simulation:
+        bearing_noise_std_deg: 1
+        digital_twin:
+          constant_bias_deg: 8
+    expected: {outcome: degraded, require_rejection: true}
+
+  - name: one_gross_outlier
+    description: One scripted 90 degree outlier is rejected while the mission succeeds.
+    classification: PASS_EXPECTED
+    seed: 7
+    hooks:
+      bearing_offsets: {3: 90}
+    expected: {outcome: complete, max_error_m: 10}
+
+  - name: multiple_outliers
+    description: Two scripted gross outliers must not create false confidence.
+    classification: DEGRADED_ALLOWED
+    seed: 9
+    hooks:
+      bearing_offsets: {3: 80, 5: -75}
+    expected: {outcome: degraded}
+
+  - name: persistent_multipath
+    description: Persistent reflected bearing cluster is rejected for poor confidence.
+    classification: DEGRADED_ALLOWED
+    seed: 4
+    overrides:
+      simulation:
+        digital_twin:
+          multipath_probability: 1
+          multipath_bias_deg: 35
+          multipath_persistence_samples: 100
+    expected: {outcome: degraded, require_rejection: true}
+
+  - name: parallel_geometry
+    description: Constant absolute bearings create singular parallel geometry.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 5
+    hooks:
+      constant_absolute_bearing_deg: 45
+    overrides:
+      kraken:
+        max_frozen_samples: 3
+    expected: {outcome: safe_failure, require_rejection: true}
+
+  - name: kraken_dropout
+    description: Total Kraken measurement loss reaches a terminal safety stop.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 6
+    overrides:
+      simulation:
+        digital_twin:
+          dropout_probability: 1
+    expected: {outcome: safe_failure, require_rejection: true}
+
+  - name: sustained_malformed_payload
+    description: Repeated malformed Kraken payloads reach a terminal rejection safety stop.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 21
+    overrides:
+      simulation:
+        digital_twin:
+          malformed_probability: 1
+    expected: {outcome: safe_failure, require_rejection: true}
+
+  - name: frozen_kraken_data
+    description: Repeated bearing data is detected and cannot complete the mission.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 10
+    overrides:
+      kraken:
+        max_frozen_samples: 3
+      simulation:
+        digital_twin:
+          frozen_probability: 1
+    expected: {outcome: safe_failure, require_rejection: true}
+
+  - name: wrong_frequency
+    description: Every bearing reports the wrong RF frequency and is rejected.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 11
+    overrides:
+      simulation:
+        digital_twin:
+          wrong_frequency_probability: 1
+          wrong_frequency_offset_hz: 5000000
+    expected: {outcome: safe_failure, require_rejection: true}
+
+  - name: gps_loss
+    description: GPS fix loss stops navigation before later commands.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 13
+    overrides:
+      simulation:
+        vehicle_twin:
+          gps_loss_after_samples: 3
+    expected: {outcome: safe_failure}
+
+  - name: heading_error
+    description: Eight degree array/heading error degrades confidence and is handled honestly.
+    classification: DEGRADED_ALLOWED
+    seed: 14
+    overrides:
+      simulation:
+        digital_twin:
+          heading_error_deg: 8
+    expected: {outcome: degraded, require_rejection: true}
+
+  - name: excessive_attitude
+    description: Persistent roll above the collection limit prevents bearing acceptance.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 15
+    max_ticks: 60
+    overrides:
+      simulation:
+        vehicle_twin:
+          stationary_roll_deg: 10
+    expected: {outcome: safe_failure}
+
+  - name: mavlink_loss
+    description: Simulated heartbeat loss stops movement commands.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 16
+    overrides:
+      simulation:
+        vehicle_twin:
+          heartbeat_loss_after_samples: 5
+    expected: {outcome: safe_failure}
+
+  - name: unreachable_waypoint
+    description: Repeated waypoint refusal exhausts alternatives and aborts safely.
+    classification: DEGRADED_ALLOWED
+    seed: 17
+    overrides:
+      simulation:
+        vehicle_twin:
+          waypoint_failure_probability: 1
+    expected: {outcome: safe_failure}
+
+  - name: unexpected_mode
+    description: Unexpected ALT_HOLD mode prevents further autonomous commands.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 18
+    overrides:
+      simulation:
+        vehicle_twin:
+          unexpected_mode_after_samples: 3
+          unexpected_mode: ALT_HOLD
+    expected: {outcome: safe_failure}
+
+  - name: operator_interrupt
+    description: Scripted operator interrupt aborts and flushes evidence without later commands.
+    classification: SAFE_FAILURE_EXPECTED
+    seed: 19
+    hooks:
+      operator_interrupt_after: 3
+    expected: {outcome: safe_failure}
+
+  - name: emitter_near_boundary
+    description: Emitter near the search boundary is localized without violating limits.
+    classification: PASS_EXPECTED
+    seed: 20
+    overrides:
+      simulation:
+        transmitter_lat: 37.0028583679978
+        transmitter_lon: -121.99642073366488
+        bearing_noise_std_deg: 0.75
+      navigation:
+        max_search_radius_m: 500
+    expected: {outcome: complete, max_error_m: 10}

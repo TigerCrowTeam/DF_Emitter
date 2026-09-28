@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.0" y="32" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold">Completion rate by scenario class</text>
+<text x="198" y="125.83333333333334" text-anchor="end" font-family="sans-serif" font-size="15">PASS_EXPECTED</text>
+<rect x="210" y="86.9" width="571.4" height="60.8" rx="4" fill="#2563eb"/>
+<text x="789.4" y="125.83333333333334" font-family="sans-serif" font-size="14">100.00%</text>
+<text x="198" y="247.50000000000003" text-anchor="end" font-family="sans-serif" font-size="15">DEGRADED_ALLOWED</text>
+<rect x="210" y="208.5666666666667" width="119.0" height="60.8" rx="4" fill="#2563eb"/>
+<text x="337.0" y="247.50000000000003" font-family="sans-serif" font-size="14">20.83%</text>
+<text x="198" y="369.1666666666667" text-anchor="end" font-family="sans-serif" font-size="15">SAFE_FAILURE_EXPECTED</text>
+<rect x="210" y="330.23333333333335" width="0.0" height="60.8" rx="4" fill="#2563eb"/>
+<text x="218.0" y="369.1666666666667" font-family="sans-serif" font-size="14">0.00%</text>
+<text x="450.0" y="482" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#555">SIMULATED RESULTS — not validated real-RF performance</text></svg>
